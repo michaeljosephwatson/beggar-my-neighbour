@@ -39,7 +39,6 @@ def generate_split(no_people):
 
 def start_game_against_computer():
     splitting = generate_split(2)
-    splitting.show_hands()
     splitting.run_game()
 
 
