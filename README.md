@@ -13,9 +13,9 @@ Rules of the game:
 + If the responding player does not get a face card then the player who placed the face card gets the pack.
 + The aim of the game is to get the whole pack.
 
-Example interaction: 2 players, player 1 places a queen of hearts, player 2 then places a 3 of clubs and then a jack of spades, then player 1 places a 5 of diamonds. This is not a face card so player 2 takes the pack and then leads the next interaction.
+*Example interaction:* 2 players, player 1 places a queen of hearts, player 2 then places a 3 of clubs and then a jack of spades, then player 1 places a 5 of diamonds. This is not a face card so player 2 takes the pack and then leads the next interaction.
 
 Currently can play against the computer.
 
-To play the game clone repository and run `python3 play_game.py'
+To play the game clone repository and run 'python3 play_game.py'
 
