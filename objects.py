@@ -1,3 +1,6 @@
+import time
+
+
 class Card:
     def __init__(self, number, suit):
         self.number = number
@@ -16,13 +19,13 @@ class GameSplit:
         self.current_deck = []
 
     def show_hands(self):
-        print("Player One Hand\n")
+        print("\nPlayer One Hand\n")
         print([card.reveal_card() for card in self.player_one_hand])
-        print("Player Two Hand\n")
+        print("\nPlayer Two Hand\n")
         print([card.reveal_card() for card in self.player_two_hand])
 
     def who_go_first(self):
-        first = input("Would you like to go first (y/n): ")
+        first = input("\nWould you like to go first (y/n): ")
 
         players_turn = 0
 
@@ -43,49 +46,67 @@ class GameSplit:
             return False, -1
 
     def remove_player_card(self):
-        waiting_input = input("")
+        waiting_input = input("\nPlayer's turn: ")
         current_card = self.player_one_hand.pop()
         print()
         print(current_card.reveal_card())
         return current_card
 
     def remove_computer_card(self):
-        waiting_input = input("")
+        time.sleep(0.5)
         current_card = self.player_two_hand.pop()
         print()
         print(current_card.reveal_card())
         return current_card
 
+    def clear_deck(self, winner):
+        if winner == 1:
+            self.player_one_hand = self.current_deck + self.player_one_hand
+            self.current_deck.clear()
+        else:
+            self.player_two_hand = self.current_deck + self.player_two_hand
+            self.current_deck.clear()
+
+    def evaluate_winner(self):
+        if len(self.player_one_hand) == 0:
+            print("\nPlayer one Wins!")
+        else:
+            print("\nComputer Wins!")
+
     def contest(self, cards_to_pull, player):
         for i in range(cards_to_pull):
             if player == 1:
-                print("Player's turn to pull...")
+                print(
+                    f"\nPlayer needs to find a face in {cards_to_pull-i} cards")
                 current_card = self.remove_player_card()
+                self.current_deck.append(current_card)
                 is_face, new_cards_to_pull = self.check_card(current_card)
                 if is_face:
                     print("Face Card")
                     return self.contest(new_cards_to_pull, 2)
                 else:
-                    if i == cards_to_pull - 1:  # The last card and player has not been able to get a face card
-                        print("Computer gets the deck.")
+                    if i == cards_to_pull - 1:
+                        print("Computer gets the deck!")
                         return 2, current_card
             else:
-                print("Computer's turn to pull...")
+                print(
+                    f"\nComputer needs to find a face in {cards_to_pull-i} cards")
                 current_card = self.remove_computer_card()
+                self.current_deck.append(current_card)
                 is_face, new_cards_to_pull = self.check_card(current_card)
                 if is_face:
                     print("Face Card")
                     return self.contest(new_cards_to_pull, 1)
                 else:
                     if i == cards_to_pull - 1:
-                        print("Player gets the deck.")
+                        print("Player gets the deck!")
                         return 1, current_card
 
     def run_game(self):
 
         players_turn = self.who_go_first()
 
-        print("Great!")
+        print("\nGreat!")
         print("For your go press enter to place your next card")
 
         print("\nPress enter to start: ")
@@ -93,12 +114,17 @@ class GameSplit:
         playing = True
         previous_card = None
         while playing:
+
             try:
+                if len(self.player_one_hand) == 0 or len(self.player_two_hand) == 0:
+                    raise IndexError
+                self.show_hands()
+
                 if players_turn == 1:
 
                     if previous_card == None:
-                        print("Player's turn...")
                         current_card = self.remove_player_card()
+                        self.current_deck.append(current_card)
                         previous_card = current_card
                         players_turn = 2
                     else:
@@ -107,18 +133,20 @@ class GameSplit:
                         if pullable:
                             winner, last_card = self.contest(cards_to_pull, 1)
                             players_turn = winner
-                            previous_card = last_card
+                            self.clear_deck(winner)
+                            previous_card = None
 
                         else:
-                            print("Player's turn...")
                             current_card = self.remove_player_card()
+                            self.current_deck.append(current_card)
                             previous_card = current_card
                             players_turn = 2
 
                 else:
                     if previous_card == None:
-                        print("Computer's turn...")
+                        print("\nComputer's turn: ")
                         current_card = self.remove_computer_card()
+                        self.current_deck.append(current_card)
                         previous_card = current_card
                         players_turn = 1
                     else:
@@ -127,13 +155,15 @@ class GameSplit:
                         if pullable:
                             winner, last_card = self.contest(cards_to_pull, 2)
                             players_turn = winner
-                            previous_card = last_card
+                            self.clear_deck(winner)
+                            previous_card = None
                         else:
-                            print("Computer's turn...")
+                            print("\nComputer's turn: ")
                             current_card = self.remove_computer_card()
+                            self.current_deck.append(current_card)
                             previous_card = current_card
                             players_turn = 1
 
             except IndexError:
-                print("Game has ended")
                 playing = False
+                self.evaluate_winner()

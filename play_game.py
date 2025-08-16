@@ -39,21 +39,22 @@ def generate_split(no_people):
 
 def start_game_against_computer():
     splitting = generate_split(2)
+    # splitting.show_hands()
     splitting.run_game()
 
 
-def start_game_with_humans(no_players):
+def start_game_with_humans():
     pass
 
 
 def menu():
     # This function runs the menu for the terminal game
-    computer_or_not = input("Do you want to play against the computer (y/n): ")
+    computer_or_not = input(
+        "\nDo you want to play against the computer (y/n): ")
     if computer_or_not == "y":
         start_game_against_computer()
     elif computer_or_not == "n":
-        no_players = int(input("How many players are there: "))
-        start_game_with_humans(no_players)
+        start_game_with_humans()
     else:
         print("Must enter either y or n... ")
 
