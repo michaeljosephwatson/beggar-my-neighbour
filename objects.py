@@ -17,6 +17,7 @@ class GameSplit:
         self.faces_score = {"J": 1, "Q": 2, "K": 3, "A": 4}
         self.faces = ["J", "Q", "K", "A"]
         self.current_deck = []
+        self.placing_delay = 0.5
 
     def show_hands(self):
         print("\nPlayer One Hand\n")
@@ -25,6 +26,7 @@ class GameSplit:
         print([card.reveal_card() for card in self.player_two_hand])
 
     def who_go_first(self):
+        time.sleep(self.placing_delay)
         first = input("\nWould you like to go first (y/n): ")
 
         players_turn = 0
@@ -46,14 +48,15 @@ class GameSplit:
             return False, -1
 
     def remove_player_card(self):
-        waiting_input = input("\nPlayer's turn: ")
+        waiting_input = input("")
         current_card = self.player_one_hand.pop()
         print()
         print(current_card.reveal_card())
+        time.sleep(self.placing_delay)
         return current_card
 
     def remove_computer_card(self):
-        time.sleep(0.5)
+        time.sleep(self.placing_delay)
         current_card = self.player_two_hand.pop()
         print()
         print(current_card.reveal_card())
@@ -82,7 +85,6 @@ class GameSplit:
                 self.current_deck.append(current_card)
                 is_face, new_cards_to_pull = self.check_card(current_card)
                 if is_face:
-                    print("Face Card")
                     return self.contest(new_cards_to_pull, 2)
                 else:
                     if i == cards_to_pull - 1:
@@ -107,9 +109,10 @@ class GameSplit:
         players_turn = self.who_go_first()
 
         print("\nGreat!")
-        print("For your go press enter to place your next card")
 
-        print("\nPress enter to start: ")
+        time.sleep(self.placing_delay)
+
+        print("\nOn your turn press enter to place your next card\nStarting the game...")
 
         playing = True
         previous_card = None
@@ -118,11 +121,11 @@ class GameSplit:
             try:
                 if len(self.player_one_hand) == 0 or len(self.player_two_hand) == 0:
                     raise IndexError
-                self.show_hands()
 
                 if players_turn == 1:
 
                     if previous_card == None:
+                        print("\nPlayer's turn:")
                         current_card = self.remove_player_card()
                         self.current_deck.append(current_card)
                         previous_card = current_card
@@ -137,6 +140,7 @@ class GameSplit:
                             previous_card = None
 
                         else:
+                            print("\nPlayer's turn:")
                             current_card = self.remove_player_card()
                             self.current_deck.append(current_card)
                             previous_card = current_card
