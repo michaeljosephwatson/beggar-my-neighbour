@@ -1,1 +1,7 @@
-Next need to add a deck for the history and do the transfers between the players
+Add some colour in the terminal 
+Add functionality in the menu:
+    - be able to toggle whether you could see the deck or not
+    - adjust the speed of the output 
+    - have option to play two player not just against the computer
+
+    
