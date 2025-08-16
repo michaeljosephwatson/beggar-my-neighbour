@@ -17,5 +17,7 @@ Rules of the game:
 
 Currently can play against the computer.
 
+NEW: For colouring, activate virtual environment with 'source colouring/venv/bin/activate'
+
 To play the game clone repository and run 'python3 play_game.py'
 
